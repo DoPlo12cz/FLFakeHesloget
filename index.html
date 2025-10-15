@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Family Link — Aktivace "Hey Google" (mockup)</title>
+  <style>
+    :root{--bg:#f1f3f4;--card:#fff;--accent:#1a73e8;--muted:#6b7280;--success:#34a853;--danger:#ea4335}
+    *{box-sizing:border-box}
+    body{font-family:Inter, Roboto, Arial, sans-serif;background:linear-gradient(180deg,var(--bg),#fff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{width:420px;background:var(--card);border-radius:12px;box-shadow:0 10px 30px rgba(20,23,28,0.08);padding:20px}
+    .header{display:flex;gap:12px;align-items:center}
+    .avatar{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#5aa3ff);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px}
+    h1{font-size:16px;margin:0}
+    p.lead{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    .reason{margin-top:16px;padding:12px;border-radius:10px;background:#fbfdff;border:1px solid #e6f0ff}
+    .reason b{display:block;margin-bottom:6px}
+
+    .form{margin-top:14px}
+    .field{display:flex;align-items:center;gap:8px}
+    label{font-size:13px;color:var(--muted);margin-bottom:8px;display:block}
+    .inputWrap{position:relative;flex:1}
+    input[type='password']{width:100%;padding:12px 40px 12px 12px;border-radius:10px;border:1px solid #e6e8eb;font-size:15px}
+    .icon{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+    .actions{margin-top:14px;display:flex;gap:8px}
+    button{flex:1;padding:10px 12px;border-radius:10px;border:0;font-weight:600;cursor:pointer}
+    .btn-send{background:var(--accent);color:#fff}
+    .btn-cancel{background:transparent;color:var(--accent);border:1px solid rgba(26,115,232,0.12)}
+
+    .hint{margin-top:12px;font-size:12px;color:var(--muted)}
+
+    /* modal */
+    .overlay{position:fixed;inset:0;background:rgba(10,10,12,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+    .overlay.show{display:flex}
+    .modal{width:420px;max-width:96%;background:var(--card);border-radius:12px;padding:18px;box-shadow:0 8px 30px rgba(10,10,12,0.15)}
+    .modal h2{margin:0 0 6px}
+    .modal p{margin:0;color:var(--muted)}
+    .modal-footer{display:flex;gap:8px;margin-top:14px}
+    .btn-primary{background:var(--accent);color:#fff;border-radius:8px;padding:10px 12px;border:0;flex:1}
+    .btn-secondary{background:transparent;border-radius:8px;padding:10px 12px;border:1px solid #e6e8eb;flex:1}
+
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 20px rgba(10,10,12,0.12);display:none}
+    .toast.show{display:block}
+
+    footer{margin-top:16px;font-size:12px;color:var(--muted);text-align:center}
+
+    @media (max-width:520px){.card{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="header">
+      <div class="avatar">FL</div>
+      <div>
+        <h1 id="title">Požadavek na aktivaci „Hey Google“</h1>
+        <p class="lead">Pro pokračování je potřeba schválení rodiče — zadejte rodičovské heslo.</p>
+      </div>
+    </div>
+
+    <div class="reason" role="status" aria-live="polite">
+      <b>Důvod:</b>
+      Aktivace hlasové asistence <strong>Hey Google</strong> pro účet dítěte. (Toto je pouze vizuální mockup — nic se skutečně neodesílá ani neukládá.)
+    </div>
+
+    <form class="form" onsubmit="return false;" autocomplete="off">
+      <label for="parentPass">Rodičovské heslo</label>
+      <div class="field">
+        <div class="inputWrap">
+          <input id="parentPass" type="password" placeholder="Zadejte heslo (simulace)" aria-label="Rodičovské heslo" />
+          <div class="icon" id="iconToggle" title="Zobrazit / skrýt heslo" aria-hidden="true">
+            <!-- lock SVG -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1zM10 8V6a2 2 0 1 1 4 0v2h-4z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-send" id="btnSend">Odeslat žádost (simulace)</button>
+        <button class="btn-cancel" id="btnCancel">Zrušit</button>
+      </div>
+    </form>
+
+    <div class="hint">Poznámka: Tento soubor je **falečná ukázka** určená pouze ke hraní — nic zadané zde **neopustí** tento prohlížeč.</div>
+
+    <footer>Mockup — pro zábavu. Nezobrazujte nebo nevyžadujte skutečná hesla.</footer>
+  </main>
+
+  <!-- Modal: Confirmation after 20s -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" id="modal">
+      <h2 id="modalTitle">Jste si jistí?</h2>
+      <p id="modalText">Heslo: <strong id="revealed">(čeká...)</strong></p>
+      <p style="margin-top:8px;color:var(--muted);font-size:13px">Toto je simulace — heslo není odesláno.</p>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalNo">Ne, zrušit</button>
+        <button class="btn-primary" id="modalYes">Ano, potvrdit (simulace)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const passInput = document.getElementById('parentPass');
+    const iconToggle = document.getElementById('iconToggle');
+    const btnSend = document.getElementById('btnSend');
+    const btnCancel = document.getElementById('btnCancel');
+    const overlay = document.getElementById('overlay');
+    const revealed = document.getElementById('revealed');
+    const toast = document.getElementById('toast');
+    const modalYes = document.getElementById('modalYes');
+    const modalNo = document.getElementById('modalNo');
+
+    // toggle visibility icon (only UI)
+    iconToggle.addEventListener('click', ()=>{
+      const t = passInput.type === 'password' ? 'text' : 'password';
+      passInput.type = t;
+      iconToggle.setAttribute('aria-hidden', 'true');
+    });
+
+    btnCancel.addEventListener('click', ()=>{
+      passInput.value = '';
+      showToast('Akce zrušena.');
+    });
+
+    btnSend.addEventListener('click', ()=>{
+      const val = passInput.value;
+      if(!val){
+        showToast('Zadejte prosím text (simulace).');
+        return;
+      }
+
+      // show temporary status
+      showToast('Žádost odeslána (simulace). Za 20 sekund se zobrazí potvrzení.');
+
+      // After 20 seconds show modal with the entered text (simulation only)
+      setTimeout(()=>{
+        // reveal the entered text in the modal — this is purely client-side and not sent nikam
+        revealed.textContent = val;
+        overlay.classList.add('show');
+        overlay.setAttribute('aria-hidden','false');
+        // focus for accessibility
+        modalNo.focus();
+      }, 45000);
+
+    });
+
+    modalNo.addEventListener('click', ()=>{
+      overlay.classList.remove('show');
+      overlay.setAttribute('aria-hidden','true');
+      showToast('Potvrzení zrušeno.');
+    });
+    modalYes.addEventListener('click', ()=>{
+      overlay.classList.remove('show');
+      overlay.setAttribute('aria-hidden','true');
+      showToast('Simulace potvrzení: aktivace dokončena.');
+    });
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'), 3200);
+    }
+  </script>
+</body>
+</html>
